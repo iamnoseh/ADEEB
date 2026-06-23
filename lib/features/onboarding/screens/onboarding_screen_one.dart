@@ -1,7 +1,5 @@
 ﻿import 'package:adeeb/app/router/route_names.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
-import 'package:adeeb/features/onboarding/widgets/onboarding_floating_icon.dart';
-import 'package:adeeb/features/onboarding/widgets/onboarding_hero_mascot.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_logo.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_pagination.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_primary_button.dart';
@@ -17,16 +15,12 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final AnimationController _entranceController;
-  late final AnimationController _floatController;
 
   late final Animation<double> _backgroundFade;
   late final Animation<double> _logoFade;
   late final Animation<Offset> _logoSlide;
-  late final Animation<double> _mascotFade;
-  late final Animation<Offset> _mascotSlide;
-  late final Animation<double> _mascotScale;
   late final Animation<double> _titleFade;
   late final Animation<Offset> _titleSlide;
   late final Animation<double> _subtitleFade;
@@ -42,10 +36,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1150),
     )..forward();
-    _floatController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2600),
-    )..repeat(reverse: true);
 
     _backgroundFade = _curved(0.00, 0.28, Curves.easeOut);
     _logoFade = _curved(0.08, 0.34, Curves.easeOut);
@@ -53,27 +43,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       begin: const Offset(0, -0.16),
       end: Offset.zero,
     ).animate(_curved(0.08, 0.40, Curves.easeOutCubic));
-    _mascotFade = _curved(0.16, 0.54, Curves.easeOut);
-    _mascotSlide = Tween<Offset>(
-      begin: const Offset(0, 0.10),
-      end: Offset.zero,
-    ).animate(_curved(0.16, 0.62, Curves.easeOutCubic));
-    _mascotScale = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(
-          begin: 0.96,
-          end: 1.018,
-        ).chain(CurveTween(curve: Curves.easeOutCubic)),
-        weight: 72,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(
-          begin: 1.018,
-          end: 1,
-        ).chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 28,
-      ),
-    ]).animate(_curved(0.18, 0.72, Curves.linear));
     _titleFade = _curved(0.56, 0.76, Curves.easeOut);
     _titleSlide = _upSlide(0.56, 0.78);
     _subtitleFade = _curved(0.64, 0.84, Curves.easeOut);
@@ -100,8 +69,24 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   void dispose() {
     _entranceController.dispose();
-    _floatController.dispose();
     super.dispose();
+  }
+
+  Widget _buildStaticIcon({
+    required String imagePath,
+    required Alignment alignment,
+    required double size,
+  }) {
+    return Align(
+      alignment: alignment,
+      child: Image.asset(
+        imagePath,
+        width: size,
+        height: size,
+        fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
+      ),
+    );
   }
 
   @override
@@ -125,6 +110,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   210.0,
                   compact ? 300.0 : 410.0,
                 );
+                final iconSize = compact ? 86.0 : 106.0;
+                final mascotHeight = heroHeight * (compact ? 0.92 : 0.96);
 
                 return Padding(
                   padding: EdgeInsets.fromLTRB(
@@ -147,56 +134,44 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           clipBehavior: Clip.none,
                           alignment: Alignment.center,
                           children: [
-                            OnboardingHeroMascot(
-                              fade: _mascotFade,
-                              slide: _mascotSlide,
-                              scale: _mascotScale,
-                              floatController: _floatController,
+                            Image.asset(
+                              'images/1.png',
+                              height: mascotHeight,
+                              fit: BoxFit.contain,
+                              filterQuality: FilterQuality.high,
+                              semanticLabel: 'ADEEB mascot',
                             ),
-                            OnboardingFloatingIcon(
+                            _buildStaticIcon(
                               imagePath: 'images/icon_cap.png',
-                              entrance: _curved(0.34, 0.56, Curves.easeOutBack),
-                              floatController: _floatController,
+                              alignment: Alignment(
+                                -0.98,
+                                compact ? -0.54 : -0.48,
+                              ),
+                              size: iconSize,
+                            ),
+                            _buildStaticIcon(
+                              imagePath: 'images/icon_target.png',
+                              alignment: Alignment(
+                                0.98,
+                                compact ? -0.42 : -0.36,
+                              ),
+                              size: iconSize,
+                            ),
+                            _buildStaticIcon(
+                              imagePath: 'images/icon_language.png',
                               alignment: Alignment(
                                 -0.92,
-                                compact ? -0.48 : -0.42,
+                                compact ? 0.54 : 0.58,
                               ),
-                              amplitude: 5,
-                              rotationTurns: -0.008,
-                              size: compact ? 62 : 80,
+                              size: iconSize,
                             ),
-                            OnboardingFloatingIcon(
-                              imagePath: 'images/icon_target.png',
-                              entrance: _curved(0.40, 0.62, Curves.easeOutBack),
-                              floatController: _floatController,
+                            _buildStaticIcon(
+                              imagePath: 'images/icon_trophy.png',
                               alignment: Alignment(
                                 0.92,
-                                compact ? -0.36 : -0.30,
+                                compact ? 0.46 : 0.52,
                               ),
-                              amplitude: -4,
-                              rotationTurns: 0.009,
-                              size: compact ? 62 : 80,
-                            ),
-                            OnboardingFloatingIcon(
-                              imagePath: 'images/icon_language.png',
-                              entrance: _curved(0.46, 0.68, Curves.easeOutBack),
-                              floatController: _floatController,
-                              alignment: Alignment(
-                                -0.88,
-                                compact ? 0.42 : 0.46,
-                              ),
-                              amplitude: 4,
-                              rotationTurns: 0.007,
-                              size: compact ? 62 : 80,
-                            ),
-                            OnboardingFloatingIcon(
-                              imagePath: 'images/icon_trophy.png',
-                              entrance: _curved(0.52, 0.74, Curves.easeOutBack),
-                              floatController: _floatController,
-                              alignment: Alignment(0.88, compact ? 0.36 : 0.42),
-                              amplitude: -5,
-                              rotationTurns: -0.007,
-                              size: compact ? 62 : 80,
+                              size: iconSize,
                             ),
                           ],
                         ),
@@ -235,3 +210,4 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 }
+
