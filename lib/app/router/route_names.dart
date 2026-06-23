@@ -1,0 +1,20 @@
+abstract final class RouteNames {
+  static const splash = '/splash';
+  static const onboarding = '/onboarding';
+  static const login = '/login';
+  static const home = '/home';
+  static const learning = '/learning';
+  static const mmt = '/mmt';
+  static const tests = '/tests';
+  static const testSolving = '/test-solving';
+  static const testResult = '/test-result';
+  static const vocabulary = '/vocabulary';
+  static const flashcards = '/flashcards';
+  static const dailyQuestion = '/daily-question';
+  static const missions = '/missions';
+  static const duel = '/duel';
+  static const league = '/league';
+  static const market = '/market';
+  static const profile = '/profile';
+  static const settings = '/settings';
+}
