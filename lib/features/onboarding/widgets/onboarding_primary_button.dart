@@ -1,9 +1,16 @@
-import 'package:adeeb/app/theme/app_colors.dart';
+﻿import 'package:adeeb/app/theme/app_colors.dart';
 import 'package:adeeb/app/theme/app_radius.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPrimaryButton extends StatefulWidget {
-  const OnboardingPrimaryButton({super.key});
+  const OnboardingPrimaryButton({
+    this.label = 'Давом додан',
+    this.onPressed,
+    super.key,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
 
   @override
   State<OnboardingPrimaryButton> createState() =>
@@ -28,7 +35,7 @@ class _OnboardingPrimaryButtonState extends State<OnboardingPrimaryButton> {
       onTapCancel: () => _setPressed(false),
       onTapUp: (_) {
         _setPressed(false);
-        // TODO: Navigate to onboarding screen 2 when implemented.
+        widget.onPressed?.call();
       },
       child: SizedBox(
         height: 64,
@@ -91,11 +98,11 @@ class _OnboardingPrimaryButtonState extends State<OnboardingPrimaryButton> {
                           size: 19,
                         ),
                         const SizedBox(width: 10),
-                        const Expanded(
+                        Expanded(
                           child: Text(
-                            'Давом додан',
+                            widget.label,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w900,

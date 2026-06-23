@@ -1,4 +1,4 @@
-import 'package:adeeb/app/router/route_names.dart';
+﻿import 'package:adeeb/app/router/route_names.dart';
 import 'package:adeeb/core/widgets/app_bottom_nav_bar.dart';
 import 'package:adeeb/features/auth/screens/login_screen.dart';
 import 'package:adeeb/features/daily_question/screens/daily_question_screen.dart';
@@ -11,6 +11,7 @@ import 'package:adeeb/features/market/screens/market_screen.dart';
 import 'package:adeeb/features/missions/screens/missions_screen.dart';
 import 'package:adeeb/features/mmt/screens/mmt_screen.dart';
 import 'package:adeeb/features/onboarding/screens/onboarding_screen.dart';
+import 'package:adeeb/features/onboarding/screens/onboarding_screen_two.dart';
 import 'package:adeeb/features/profile/screens/profile_screen.dart';
 import 'package:adeeb/features/settings/screens/settings_screen.dart';
 import 'package:adeeb/features/splash/screens/splash_screen.dart';
@@ -47,6 +48,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.onboarding,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.onboardingTwo,
+        builder: (context, state) => const OnboardingScreenTwo(),
       ),
       GoRoute(
         path: RouteNames.login,

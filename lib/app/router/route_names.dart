@@ -1,6 +1,7 @@
-abstract final class RouteNames {
+﻿abstract final class RouteNames {
   static const splash = '/splash';
   static const onboarding = '/onboarding';
+  static const onboardingTwo = '/onboarding-2';
   static const login = '/login';
   static const home = '/home';
   static const learning = '/learning';

@@ -1,4 +1,5 @@
-﻿import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
+﻿import 'package:adeeb/app/router/route_names.dart';
+import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_floating_icon.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_hero_mascot.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_logo.dart';
@@ -6,6 +7,7 @@ import 'package:adeeb/features/onboarding/widgets/onboarding_pagination.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_primary_button.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_title_section.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -217,7 +219,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         opacity: _buttonFade,
                         child: SlideTransition(
                           position: _buttonSlide,
-                          child: const OnboardingPrimaryButton(),
+                          child: OnboardingPrimaryButton(
+                            onPressed: () => context.go(RouteNames.onboardingTwo),
+                          ),
                         ),
                       ),
                     ],
@@ -231,4 +235,3 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 }
-
