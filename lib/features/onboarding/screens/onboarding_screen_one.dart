@@ -1,4 +1,4 @@
-import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
+﻿import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_floating_icon.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_hero_mascot.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_logo.dart';
@@ -118,27 +118,27 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               builder: (context, constraints) {
                 final height = constraints.maxHeight;
                 final width = constraints.maxWidth;
-                final compact = height < 700;
-                final heroHeight = (height * (compact ? 0.43 : 0.47)).clamp(
-                  250.0,
-                  430.0,
+                final compact = height < 820;
+                final heroHeight = (height * (compact ? 0.34 : 0.43)).clamp(
+                  210.0,
+                  compact ? 300.0 : 410.0,
                 );
 
                 return Padding(
                   padding: EdgeInsets.fromLTRB(
                     width * 0.07,
-                    compact ? 10 : 16,
+                    compact ? 30 : 38,
                     width * 0.07,
-                    compact ? 14 : 22,
+                    compact ? 44 : 52,
                   ),
                   child: Column(
                     children: [
                       OnboardingLogo(
                         fade: _logoFade,
                         slide: _logoSlide,
-                        height: compact ? 90 : 112,
+                        height: compact ? 68 : 100,
                       ),
-                      SizedBox(height: compact ? 4 : 10),
+                      SizedBox(height: compact ? 2 : 8),
                       SizedBox(
                         height: heroHeight,
                         child: Stack(
@@ -161,7 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               ),
                               amplitude: 5,
                               rotationTurns: -0.008,
-                              size: compact ? 72 : 80,
+                              size: compact ? 62 : 80,
                             ),
                             OnboardingFloatingIcon(
                               imagePath: 'images/icon_target.png',
@@ -173,7 +173,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               ),
                               amplitude: -4,
                               rotationTurns: 0.009,
-                              size: compact ? 72 : 80,
+                              size: compact ? 62 : 80,
                             ),
                             OnboardingFloatingIcon(
                               imagePath: 'images/icon_language.png',
@@ -185,7 +185,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               ),
                               amplitude: 4,
                               rotationTurns: 0.007,
-                              size: compact ? 72 : 80,
+                              size: compact ? 62 : 80,
                             ),
                             OnboardingFloatingIcon(
                               imagePath: 'images/icon_trophy.png',
@@ -194,12 +194,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               alignment: Alignment(0.88, compact ? 0.36 : 0.42),
                               amplitude: -5,
                               rotationTurns: -0.007,
-                              size: compact ? 72 : 80,
+                              size: compact ? 62 : 80,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: compact ? 8 : 14),
+                      SizedBox(height: compact ? 30 : 42),
                       OnboardingTitleSection(
                         titleFade: _titleFade,
                         titleSlide: _titleSlide,
@@ -212,7 +212,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         opacity: _paginationFade,
                         child: const OnboardingPagination(activeIndex: 0),
                       ),
-                      SizedBox(height: compact ? 10 : 20),
+                      SizedBox(height: compact ? 5 : 18),
                       FadeTransition(
                         opacity: _buttonFade,
                         child: SlideTransition(
@@ -231,3 +231,4 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 }
+

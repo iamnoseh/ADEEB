@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:adeeb/app/theme/app_colors.dart';
 import 'package:adeeb/app/theme/app_radius.dart';
-import 'package:adeeb/app/theme/app_shadows.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingFloatingIcon extends StatelessWidget {
@@ -50,17 +48,63 @@ class OnboardingFloatingIcon extends StatelessWidget {
         child: Container(
           width: size,
           height: size,
-          padding: const EdgeInsets.all(9),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.88),
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.gold.withValues(alpha: 0.34)),
-            boxShadow: AppShadows.gold,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFFFFFBEC), Color(0xFFFFE5A2), Color(0xFFD7A334)],
+              stops: [0, 0.64, 1],
+            ),
+            borderRadius: BorderRadius.circular(AppRadius.lg + 4),
+            border: Border.all(color: Colors.white, width: 1.4),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x33A87300),
+                blurRadius: 24,
+                offset: Offset(0, 14),
+              ),
+              BoxShadow(
+                color: Color(0x55FFFFFF),
+                blurRadius: 10,
+                offset: Offset(-3, -3),
+              ),
+            ],
           ),
-          child: Image.asset(
-            imagePath,
-            fit: BoxFit.contain,
-            filterQuality: FilterQuality.high,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              gradient: RadialGradient(
+                center: const Alignment(-0.28, -0.34),
+                radius: 0.95,
+                colors: [
+                  Colors.white.withValues(alpha: 0.96),
+                  const Color(0xFFFFF0B8),
+                  const Color(0xFFE1AD36),
+                ],
+                stops: const [0, 0.66, 1],
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x33FFFFFF),
+                  blurRadius: 7,
+                  offset: Offset(-2, -2),
+                ),
+                BoxShadow(
+                  color: Color(0x229D7218),
+                  blurRadius: 8,
+                  offset: Offset(2, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(6),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+              ),
+            ),
           ),
         ),
       ),

@@ -11,8 +11,8 @@ import 'package:go_router/go_router.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
-  static const animationDuration = Duration(milliseconds: 2600);
-  static const navigationDelay = Duration(milliseconds: 2900);
+  static const animationDuration = Duration(milliseconds: 4300);
+  static const navigationDelay = Duration(milliseconds: 5200);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();

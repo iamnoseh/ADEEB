@@ -2,68 +2,138 @@ import 'package:adeeb/app/theme/app_colors.dart';
 import 'package:adeeb/app/theme/app_radius.dart';
 import 'package:flutter/material.dart';
 
-class OnboardingPrimaryButton extends StatelessWidget {
+class OnboardingPrimaryButton extends StatefulWidget {
   const OnboardingPrimaryButton({super.key});
 
   @override
+  State<OnboardingPrimaryButton> createState() =>
+      _OnboardingPrimaryButtonState();
+}
+
+class _OnboardingPrimaryButtonState extends State<OnboardingPrimaryButton> {
+  var _pressed = false;
+
+  void _setPressed(bool value) {
+    if (_pressed == value) return;
+    setState(() => _pressed = value);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x3312100B),
-            blurRadius: 24,
-            offset: Offset(0, 12),
-          ),
-        ],
-      ),
-      child: Material(
-        color: AppColors.ink,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(AppRadius.pill),
-          onTap: () {
-            // TODO: Navigate to onboarding screen 2 when implemented.
-          },
-          child: Container(
-            height: 60,
-            padding: const EdgeInsets.only(left: 22, right: 6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-              border: Border.all(color: AppColors.gold, width: 1.2),
+    const lift = 7.0;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: (_) => _setPressed(true),
+      onTapCancel: () => _setPressed(false),
+      onTapUp: (_) {
+        _setPressed(false);
+        // TODO: Navigate to onboarding screen 2 when implemented.
+      },
+      child: SizedBox(
+        height: 64,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              top: lift,
+              bottom: 0,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: const Color(0xFF8B6818),
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x2E12100B),
+                      blurRadius: 18,
+                      offset: Offset(0, 10),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Row(
-              children: [
-                const Icon(Icons.auto_awesome, color: AppColors.gold, size: 18),
-                const SizedBox(width: 10),
-                const Expanded(
-                  child: Text(
-                    'Давом додан',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0,
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 90),
+              curve: Curves.easeOut,
+              left: 0,
+              right: 0,
+              top: _pressed ? lift : 0,
+              bottom: _pressed ? 0 : lift,
+              child: AnimatedScale(
+                duration: const Duration(milliseconds: 90),
+                curve: Curves.easeOut,
+                scale: _pressed ? 0.992 : 1,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xFF242015), Color(0xFF100E0A)],
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    border: Border.all(color: AppColors.gold, width: 1.4),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x33FFFFFF),
+                        blurRadius: 7,
+                        offset: Offset(0, -2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 22, right: 6),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.auto_awesome,
+                          color: AppColors.gold,
+                          size: 19,
+                        ),
+                        const SizedBox(width: 10),
+                        const Expanded(
+                          child: Text(
+                            'Давом додан',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color(0xFFF1C64E), Color(0xFFD19B21)],
+                            ),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white.withValues(alpha: 0.28),
+                                blurRadius: 6,
+                                offset: const Offset(-2, -2),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_rounded,
+                            color: AppColors.ink,
+                            size: 26,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    color: AppColors.gold,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColors.ink,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
