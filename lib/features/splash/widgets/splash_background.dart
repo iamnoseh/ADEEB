@@ -81,13 +81,19 @@ class _GoldenWavePainter extends CustomPainter {
       ..close();
 
     final bottomPaint = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        colors: [Color(0x2ED7A534), Color(0x00D7A534)],
-      ).createShader(
-        Rect.fromLTWH(0, size.height * 0.58, size.width, size.height * 0.42),
-      );
+      ..shader =
+          const LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [Color(0x2ED7A534), Color(0x00D7A534)],
+          ).createShader(
+            Rect.fromLTWH(
+              0,
+              size.height * 0.58,
+              size.width,
+              size.height * 0.42,
+            ),
+          );
 
     final bottomPath = Path()
       ..moveTo(0, size.height * 0.84)

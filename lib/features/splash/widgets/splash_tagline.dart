@@ -29,10 +29,7 @@ class SplashTagline extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 14),
-        FadeTransition(
-          opacity: dividerFade,
-          child: const _GoldDivider(),
-        ),
+        FadeTransition(opacity: dividerFade, child: const _GoldDivider()),
       ],
     );
   }

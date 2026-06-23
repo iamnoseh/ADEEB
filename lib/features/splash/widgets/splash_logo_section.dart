@@ -6,7 +6,8 @@ class SplashLogoSection extends StatelessWidget {
     required this.logoScale,
     required this.wordmarkFade,
     required this.wordmarkSlide,
-    required this.compact,
+    required this.logoWidth,
+    required this.wordmarkWidth,
     super.key,
   });
 
@@ -14,7 +15,8 @@ class SplashLogoSection extends StatelessWidget {
   final Animation<double> logoScale;
   final Animation<double> wordmarkFade;
   final Animation<Offset> wordmarkSlide;
-  final bool compact;
+  final double logoWidth;
+  final double wordmarkWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +29,21 @@ class SplashLogoSection extends StatelessWidget {
             scale: logoScale,
             child: Image.asset(
               'images/logo.png',
-              width: compact ? 116 : 140,
+              width: logoWidth,
               fit: BoxFit.contain,
               filterQuality: FilterQuality.high,
               semanticLabel: 'ADEEB logo',
             ),
           ),
         ),
-        SizedBox(height: compact ? 8 : 10),
+        const SizedBox(height: 8),
         FadeTransition(
           opacity: wordmarkFade,
           child: SlideTransition(
             position: wordmarkSlide,
             child: Image.asset(
               'images/adeeb.png',
-              width: compact ? 210 : 250,
+              width: wordmarkWidth,
               fit: BoxFit.contain,
               filterQuality: FilterQuality.high,
               semanticLabel: 'ADEEB wordmark',

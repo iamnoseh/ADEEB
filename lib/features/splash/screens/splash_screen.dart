@@ -62,13 +62,17 @@ class _SplashScreenState extends State<SplashScreen>
     ).animate(_curved(0.62, 0.94, Curves.easeOutCubic));
     _mascotScale = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween(begin: 0.96, end: 1.015)
-            .chain(CurveTween(curve: Curves.easeOutCubic)),
+        tween: Tween<double>(
+          begin: 0.96,
+          end: 1.015,
+        ).chain(CurveTween(curve: Curves.easeOutCubic)),
         weight: 70,
       ),
       TweenSequenceItem(
-        tween: Tween(begin: 1.015, end: 1)
-            .chain(CurveTween(curve: Curves.easeInOut)),
+        tween: Tween<double>(
+          begin: 1.015,
+          end: 1,
+        ).chain(CurveTween(curve: Curves.easeInOut)),
         weight: 30,
       ),
     ]).animate(_curved(0.70, 1.00, Curves.linear));
@@ -110,21 +114,27 @@ class _SplashScreenState extends State<SplashScreen>
               builder: (context, constraints) {
                 final height = constraints.maxHeight;
                 final compact = height < 680;
+                final logoWidth = (height * 0.18).clamp(96.0, 140.0);
+                final wordmarkWidth = (height * 0.33).clamp(178.0, 250.0);
+                final mascotHeight = (height * 0.36).clamp(210.0, 330.0);
                 final horizontalPadding = compact ? 28.0 : 36.0;
 
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
                   child: Column(
                     children: [
-                      SizedBox(height: compact ? height * 0.07 : height * 0.10),
+                      SizedBox(
+                        height: compact ? height * 0.045 : height * 0.09,
+                      ),
                       SplashLogoSection(
                         logoFade: _logoFade,
                         logoScale: _logoScale,
                         wordmarkFade: _wordmarkFade,
                         wordmarkSlide: _wordmarkSlide,
-                        compact: compact,
+                        logoWidth: logoWidth,
+                        wordmarkWidth: wordmarkWidth,
                       ),
-                      SizedBox(height: compact ? 16 : 22),
+                      SizedBox(height: compact ? 12 : 22),
                       SplashTagline(
                         taglineFade: _taglineFade,
                         dividerFade: _dividerFade,
@@ -134,9 +144,9 @@ class _SplashScreenState extends State<SplashScreen>
                         fade: _mascotFade,
                         slide: _mascotSlide,
                         scale: _mascotScale,
-                        compact: compact,
+                        height: mascotHeight,
                       ),
-                      SizedBox(height: compact ? 18 : 28),
+                      SizedBox(height: compact ? 12 : 28),
                     ],
                   ),
                 );

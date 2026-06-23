@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
-class SplashMascot extends StatelessWidget {
-  const SplashMascot({
+class OnboardingLogo extends StatelessWidget {
+  const OnboardingLogo({
     required this.fade,
     required this.slide,
-    required this.scale,
     required this.height,
     super.key,
   });
 
   final Animation<double> fade;
   final Animation<Offset> slide;
-  final Animation<double> scale;
   final double height;
 
   @override
@@ -20,15 +18,12 @@ class SplashMascot extends StatelessWidget {
       opacity: fade,
       child: SlideTransition(
         position: slide,
-        child: ScaleTransition(
-          scale: scale,
-          child: Image.asset(
-            'images/0.png',
-            height: height,
-            fit: BoxFit.contain,
-            filterQuality: FilterQuality.high,
-            semanticLabel: 'ADEEB mascot',
-          ),
+        child: Image.asset(
+          'images/logo_onboarding_clean.png',
+          height: height,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+          semanticLabel: 'ADEEB',
         ),
       ),
     );

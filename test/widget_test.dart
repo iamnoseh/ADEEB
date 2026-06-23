@@ -18,6 +18,15 @@ void main() {
     expect(find.byType(Router<Object>), findsOneWidget);
   });
 
+  testWidgets('splash automatically navigates to onboarding', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: AdeebApp()));
+
+    await tester.pump(const Duration(milliseconds: 3000));
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(find.text('Омӯзишро ба сатҳи нав бардор'), findsOneWidget);
+  });
+
   test('router exposes all planned route paths', () {
     final container = ProviderContainer();
     addTearDown(container.dispose);
