@@ -118,12 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 final height = constraints.maxHeight;
                 final width = constraints.maxWidth;
                 final compact = height < 820;
-                final heroHeight = (height * (compact ? 0.34 : 0.43)).clamp(
-                  210.0,
-                  compact ? 300.0 : 410.0,
-                );
                 final iconSize = compact ? 96.0 : 120.0;
-                final mascotHeight = heroHeight * (compact ? 0.92 : 0.96);
 
                 return Padding(
                   padding: EdgeInsets.fromLTRB(
@@ -140,61 +135,76 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         height: compact ? 68 : 100,
                       ),
                       SizedBox(height: compact ? 2 : 8),
-                      SizedBox(
-                        height: heroHeight,
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.center,
-                          children: [
-                            Image.asset(
-                              'images/1.png',
-                              height: mascotHeight,
-                              fit: BoxFit.contain,
-                              filterQuality: FilterQuality.high,
-                              semanticLabel: 'ADEEB mascot',
-                            ),
-                            _buildFloatingIcon(
-                              imagePath: 'images/icon_cap.png',
-                              alignment: Alignment(
-                                -1.04,
-                                compact ? -0.56 : -0.50,
-                              ),
-                              size: iconSize,
-                              phase: 0.02,
-                              amplitude: compact ? 4.5 : 6,
-                              rotationTurns: 0.006,
-                            ),
-                            _buildFloatingIcon(
-                              imagePath: 'images/icon_target.png',
-                              alignment: Alignment(
-                                1.04,
-                                compact ? -0.44 : -0.38,
-                              ),
-                              size: iconSize,
-                              phase: 0.34,
-                              amplitude: compact ? 5.5 : 7,
-                              rotationTurns: -0.005,
-                            ),
-                            _buildFloatingIcon(
-                              imagePath: 'images/icon_language.png',
-                              alignment: Alignment(
-                                -0.98,
-                                compact ? 0.58 : 0.62,
-                              ),
-                              size: iconSize,
-                              phase: 0.60,
-                              amplitude: compact ? 5 : 6.5,
-                              rotationTurns: -0.006,
-                            ),
-                            _buildFloatingIcon(
-                              imagePath: 'images/icon_trophy.png',
-                              alignment: Alignment(0.98, compact ? 0.50 : 0.56),
-                              size: iconSize,
-                              phase: 0.82,
-                              amplitude: compact ? 4.5 : 6,
-                              rotationTurns: 0.005,
-                            ),
-                          ],
+                      Expanded(
+                        flex: 3,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: LayoutBuilder(
+                            builder: (context, heroConstraints) {
+                              final mascotHeight =
+                                  heroConstraints.maxHeight
+                                      .clamp(0.0, compact ? 300.0 : 410.0)
+                                      .toDouble() *
+                                  (compact ? 0.92 : 0.96);
+                              return Stack(
+                                clipBehavior: Clip.none,
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset(
+                                    'images/1.png',
+                                    height: mascotHeight,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.high,
+                                    semanticLabel: 'ADEEB mascot',
+                                  ),
+                                  _buildFloatingIcon(
+                                    imagePath: 'images/icon_cap.png',
+                                    alignment: Alignment(
+                                      -1.04,
+                                      compact ? -0.56 : -0.50,
+                                    ),
+                                    size: iconSize,
+                                    phase: 0.02,
+                                    amplitude: compact ? 4.5 : 6,
+                                    rotationTurns: 0.006,
+                                  ),
+                                  _buildFloatingIcon(
+                                    imagePath: 'images/icon_target.png',
+                                    alignment: Alignment(
+                                      1.04,
+                                      compact ? -0.44 : -0.38,
+                                    ),
+                                    size: iconSize,
+                                    phase: 0.34,
+                                    amplitude: compact ? 5.5 : 7,
+                                    rotationTurns: -0.005,
+                                  ),
+                                  _buildFloatingIcon(
+                                    imagePath: 'images/icon_language.png',
+                                    alignment: Alignment(
+                                      -0.98,
+                                      compact ? 0.58 : 0.62,
+                                    ),
+                                    size: iconSize,
+                                    phase: 0.60,
+                                    amplitude: compact ? 5 : 6.5,
+                                    rotationTurns: -0.006,
+                                  ),
+                                  _buildFloatingIcon(
+                                    imagePath: 'images/icon_trophy.png',
+                                    alignment: Alignment(
+                                      0.98,
+                                      compact ? 0.50 : 0.56,
+                                    ),
+                                    size: iconSize,
+                                    phase: 0.82,
+                                    amplitude: compact ? 4.5 : 6,
+                                    rotationTurns: 0.005,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(height: compact ? 30 : 42),

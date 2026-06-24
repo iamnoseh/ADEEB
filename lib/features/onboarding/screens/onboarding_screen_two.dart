@@ -134,10 +134,6 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
                 final height = constraints.maxHeight;
                 final width = constraints.maxWidth;
                 final compact = height < 820;
-                final heroHeight = (height * (compact ? 0.40 : 0.48)).clamp(
-                  280.0,
-                  compact ? 390.0 : 460.0,
-                );
                 final cardSize = compact ? 112.0 : 134.0;
 
                 return Padding(
@@ -155,57 +151,71 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
                         height: compact ? 64 : 94,
                       ),
                       SizedBox(height: compact ? 8 : 14),
-                      SizedBox(
-                        height: heroHeight,
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.center,
-                          children: [
-                            _buildMascot(heroHeight, compact),
-                            // TODO: Replace these cleaned fallback assets with the original source exports
-                            // once real transparent PNG reward cards are available from design.
-                            _buildRewardCard(
-                              imagePath: 'images/xp_transparent.png',
-                              alignment: Alignment(
-                                -1.06,
-                                compact ? -0.38 : -0.34,
-                              ),
-                              size: cardSize,
-                              phase: 0.04,
-                              amplitude: compact ? 4.5 : 6,
-                              rotationTurns: 0.004,
-                            ),
-                            _buildRewardCard(
-                              imagePath: 'images/coin_transparent.png',
-                              alignment: Alignment(
-                                1.06,
-                                compact ? -0.26 : -0.22,
-                              ),
-                              size: cardSize,
-                              phase: 0.32,
-                              amplitude: compact ? 5.5 : 7,
-                              rotationTurns: -0.004,
-                            ),
-                            _buildRewardCard(
-                              imagePath: 'images/streak_card_transparent.png',
-                              alignment: Alignment(
-                                -1.00,
-                                compact ? 0.40 : 0.44,
-                              ),
-                              size: cardSize,
-                              phase: 0.58,
-                              amplitude: compact ? 5 : 6.5,
-                              rotationTurns: -0.0045,
-                            ),
-                            _buildRewardCard(
-                              imagePath: 'images/league_transparent.png',
-                              alignment: Alignment(1.00, compact ? 0.34 : 0.40),
-                              size: cardSize,
-                              phase: 0.80,
-                              amplitude: compact ? 4.5 : 6,
-                              rotationTurns: 0.0045,
-                            ),
-                          ],
+                      Expanded(
+                        flex: 3,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: LayoutBuilder(
+                            builder: (context, heroConstraints) {
+                              final heroHeight = heroConstraints.maxHeight
+                                  .clamp(0.0, compact ? 390.0 : 460.0)
+                                  .toDouble();
+                              return Stack(
+                                clipBehavior: Clip.none,
+                                alignment: Alignment.center,
+                                children: [
+                                  _buildMascot(heroHeight, compact),
+                                  // TODO: Replace these cleaned fallback assets with the original source exports
+                                  // once real transparent PNG reward cards are available from design.
+                                  _buildRewardCard(
+                                    imagePath: 'images/xp_transparent.png',
+                                    alignment: Alignment(
+                                      -1.06,
+                                      compact ? -0.38 : -0.34,
+                                    ),
+                                    size: cardSize,
+                                    phase: 0.04,
+                                    amplitude: compact ? 4.5 : 6,
+                                    rotationTurns: 0.004,
+                                  ),
+                                  _buildRewardCard(
+                                    imagePath: 'images/coin_transparent.png',
+                                    alignment: Alignment(
+                                      1.06,
+                                      compact ? -0.26 : -0.22,
+                                    ),
+                                    size: cardSize,
+                                    phase: 0.32,
+                                    amplitude: compact ? 5.5 : 7,
+                                    rotationTurns: -0.004,
+                                  ),
+                                  _buildRewardCard(
+                                    imagePath:
+                                        'images/streak_card_transparent.png',
+                                    alignment: Alignment(
+                                      -1.00,
+                                      compact ? 0.40 : 0.44,
+                                    ),
+                                    size: cardSize,
+                                    phase: 0.58,
+                                    amplitude: compact ? 5 : 6.5,
+                                    rotationTurns: -0.0045,
+                                  ),
+                                  _buildRewardCard(
+                                    imagePath: 'images/league_transparent.png',
+                                    alignment: Alignment(
+                                      1.00,
+                                      compact ? 0.34 : 0.40,
+                                    ),
+                                    size: cardSize,
+                                    phase: 0.80,
+                                    amplitude: compact ? 4.5 : 6,
+                                    rotationTurns: 0.0045,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(height: compact ? 24 : 32),

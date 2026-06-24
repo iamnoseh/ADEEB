@@ -164,9 +164,6 @@ class _OnboardingScreenThreeState extends State<OnboardingScreenThree>
                 final width = constraints.maxWidth;
                 final compact = height < 820;
                 final logoHeight = compact ? 66.0 : 92.0;
-                final heroHeight = (height * (compact ? 0.42 : 0.50))
-                    .clamp(285.0, compact ? 380.0 : 500.0)
-                    .toDouble();
                 final mascotCanvas = (width * (compact ? 1.08 : 1.12))
                     .clamp(390.0, compact ? 450.0 : 560.0)
                     .toDouble();
@@ -192,73 +189,78 @@ class _OnboardingScreenThreeState extends State<OnboardingScreenThree>
                         height: logoHeight,
                       ),
                       SizedBox(height: compact ? 0 : 6),
-                      SizedBox(
-                        height: heroHeight,
-                        width: double.infinity,
-                        child: LayoutBuilder(
-                          builder: (context, heroConstraints) {
-                            final heroWidth = heroConstraints.maxWidth;
-                            final mascotLeft = (heroWidth - mascotCanvas) / 2;
-                            final mascotTop = (heroHeight - mascotCanvas) / 2;
-                            final cardLeft = (heroWidth - cardCanvas) / 2;
-                            final cardTop = (heroHeight - cardCanvas) / 2;
-                            final borderLeft = (heroWidth - borderCanvas) / 2;
-                            final borderTop = (heroHeight - borderCanvas) / 2;
+                      Expanded(
+                        flex: 3,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: LayoutBuilder(
+                            builder: (context, heroConstraints) {
+                              final heroWidth = heroConstraints.maxWidth;
+                              final heroHeight = heroConstraints.maxHeight
+                                  .clamp(0.0, compact ? 380.0 : 500.0)
+                                  .toDouble();
+                              final mascotLeft = (heroWidth - mascotCanvas) / 2;
+                              final mascotTop = (heroHeight - mascotCanvas) / 2;
+                              final cardLeft = (heroWidth - cardCanvas) / 2;
+                              final cardTop = (heroHeight - cardCanvas) / 2;
+                              final borderLeft = (heroWidth - borderCanvas) / 2;
+                              final borderTop = (heroHeight - borderCanvas) / 2;
 
-                            return Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                _positionedAsset(
-                                  path: 'images/лига.png',
-                                  size: cardCanvas,
-                                  left: cardLeft - width * 0.24,
-                                  top: cardTop - heroHeight * 0.10,
-                                  phase: 0.06,
-                                  amplitude: compact ? 4.5 : 6,
-                                  rotationTurns: -0.004,
-                                ),
-                                _positionedAsset(
-                                  path: 'images/дуел.png',
-                                  size: cardCanvas,
-                                  left: cardLeft + width * 0.24,
-                                  top: cardTop - heroHeight * 0.10,
-                                  phase: 0.34,
-                                  amplitude: compact ? 5.5 : 7,
-                                  rotationTurns: 0.0045,
-                                ),
-                                _positionedAsset(
-                                  path: 'images/тест.png',
-                                  size: cardCanvas,
-                                  left: cardLeft - width * 0.27,
-                                  top: cardTop + heroHeight * 0.17,
-                                  phase: 0.58,
-                                  amplitude: compact ? 5 : 6.5,
-                                  rotationTurns: 0.004,
-                                ),
-                                _positionedAsset(
-                                  path: 'images/натича.png',
-                                  size: cardCanvas,
-                                  left: cardLeft + width * 0.27,
-                                  top: cardTop + heroHeight * 0.17,
-                                  phase: 0.80,
-                                  amplitude: compact ? 4.5 : 6,
-                                  rotationTurns: -0.004,
-                                ),
-                                _staticPositionedAsset(
-                                  path: 'images/pr3.png',
-                                  size: mascotCanvas,
-                                  left: mascotLeft,
-                                  top: mascotTop + heroHeight * 0.04,
-                                ),
-                                _staticPositionedAsset(
-                                  path: 'images/бордер.png',
-                                  size: borderCanvas,
-                                  left: borderLeft,
-                                  top: borderTop + heroHeight * 0.40,
-                                ),
-                              ],
-                            );
-                          },
+                              return Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  _positionedAsset(
+                                    path: 'images/лига.png',
+                                    size: cardCanvas,
+                                    left: cardLeft - width * 0.24,
+                                    top: cardTop - heroHeight * 0.10,
+                                    phase: 0.06,
+                                    amplitude: compact ? 4.5 : 6,
+                                    rotationTurns: -0.004,
+                                  ),
+                                  _positionedAsset(
+                                    path: 'images/дуел.png',
+                                    size: cardCanvas,
+                                    left: cardLeft + width * 0.24,
+                                    top: cardTop - heroHeight * 0.10,
+                                    phase: 0.34,
+                                    amplitude: compact ? 5.5 : 7,
+                                    rotationTurns: 0.0045,
+                                  ),
+                                  _positionedAsset(
+                                    path: 'images/тест.png',
+                                    size: cardCanvas,
+                                    left: cardLeft - width * 0.27,
+                                    top: cardTop + heroHeight * 0.17,
+                                    phase: 0.58,
+                                    amplitude: compact ? 5 : 6.5,
+                                    rotationTurns: 0.004,
+                                  ),
+                                  _positionedAsset(
+                                    path: 'images/натича.png',
+                                    size: cardCanvas,
+                                    left: cardLeft + width * 0.27,
+                                    top: cardTop + heroHeight * 0.17,
+                                    phase: 0.80,
+                                    amplitude: compact ? 4.5 : 6,
+                                    rotationTurns: -0.004,
+                                  ),
+                                  _staticPositionedAsset(
+                                    path: 'images/pr3.png',
+                                    size: mascotCanvas,
+                                    left: mascotLeft,
+                                    top: mascotTop + heroHeight * 0.04,
+                                  ),
+                                  _staticPositionedAsset(
+                                    path: 'images/бордер.png',
+                                    size: borderCanvas,
+                                    left: borderLeft,
+                                    top: borderTop + heroHeight * 0.40,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(height: compact ? 20 : 28),

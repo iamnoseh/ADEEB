@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:adeeb/app/router/route_names.dart';
 import 'package:adeeb/app/theme/app_colors.dart';
@@ -19,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   static const _welcomeTitle = 'Хуш омадед!';
   static const _welcomeSubtitle =
-      'Ба платформаи ADEEB баргардед\nва дониши худро идома диҳед.';
+      'Ба платформаи ADEEB баргардед ва\nдониши худро идома диҳед.';
 
   Timer? _typingTimer;
   Timer? _cursorTimer;
@@ -77,7 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          const OnboardingAnimatedBackground(),
+          // Тамоми паҳноии таркиби тиллоӣ намоён шавад (мисли дизайн):
+          // тарафҳо бурида намешаванд, поён ба сафед мегузарад.
+          const OnboardingAnimatedBackground(fit: BoxFit.fitWidth),
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -98,177 +99,143 @@ class _LoginScreenState extends State<LoginScreen> {
                 final titleTypingDone =
                     _titleCount >= _welcomeTitle.characters.length;
 
-                return Padding(
+                final topPad = compact ? 10.0 : 20.0;
+                final bottomPad = compact ? 12.0 : 22.0;
+
+                return SingleChildScrollView(
                   padding: EdgeInsets.fromLTRB(
                     sidePadding,
-                    compact ? 10 : 20,
+                    topPad,
                     sidePadding,
-                    compact ? 12 : 22,
+                    bottomPad,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            'images/logo_onboarding_clean.png',
-                            height: logoHeight,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.high,
-                            semanticLabel: 'ADEEB',
-                          ),
-                          SizedBox(height: compact ? 0 : 4),
-                          SizedBox(
-                            height: heroHeight,
-                            width: double.infinity,
-                            child: Stack(
-                              fit: StackFit.expand,
-                              alignment: Alignment.topCenter,
-                              children: [
-                                OverflowBox(
-                                  maxWidth: width * 1.24,
-                                  maxHeight: heroHeight * 1.52,
-                                  child: Image.asset(
-                                    'images/пр4.png',
-                                    height:
-                                        heroHeight * (compact ? 1.58 : 1.68),
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.high,
-                                    semanticLabel: 'ADEEB mascot',
-                                  ),
-                                ),
-                                Positioned(
-                                  left: -sidePadding,
-                                  right: -sidePadding,
-                                  bottom: -1,
-                                  child: IgnorePointer(
-                                    child: Container(
-                                      height: compact ? 82 : 96,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Colors.white.withValues(alpha: 0),
-                                            Colors.white.withValues(
-                                              alpha: 0.28,
-                                            ),
-                                            Colors.white.withValues(
-                                              alpha: 0.78,
-                                            ),
-                                            Colors.white,
-                                          ],
-                                          stops: const [0, 0.38, 0.76, 1],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: height - topPad - bottomPad,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'images/logo_onboarding_clean.png',
+                          height: logoHeight,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.high,
+                          semanticLabel: 'ADEEB',
+                        ),
+                        SizedBox(height: compact ? 2 : 6),
+                        SizedBox(
+                          height: heroHeight,
+                          width: double.infinity,
+                          child: OverflowBox(
+                            maxWidth: width * 1.24,
+                            maxHeight: heroHeight * 1.52,
+                            child: Image.asset(
+                              'images/пр4.png',
+                              height: heroHeight * (compact ? 1.58 : 1.68),
+                              fit: BoxFit.contain,
+                              filterQuality: FilterQuality.high,
+                              semanticLabel: 'ADEEB mascot',
                             ),
                           ),
-                          SizedBox(height: compact ? 0 : 4),
-                          _FrostedLoginPanel(
-                            compact: compact,
-                            child: Column(
-                              children: [
-                                _WelcomeTitle(
-                                  visibleText: titleText,
-                                  showCursor:
-                                      !_typingFinished &&
-                                      _subtitleCount == 0 &&
-                                      _showCursor,
-                                ),
-                                _GoldUnderline(width: compact ? 174 : 204),
-                                _TypingSubtitle(
-                                  fullText: _welcomeSubtitle,
-                                  visibleText: subtitleText,
-                                  showCursor:
-                                      titleTypingDone &&
-                                      !_typingFinished &&
-                                      _showCursor,
-                                  compact: compact,
-                                ),
-                                SizedBox(height: compact ? 11 : 15),
-                                const _LoginTextField(
-                                  icon: Icons.person_outline_rounded,
-                                  hintText: 'Рақами телефон ё email',
-                                  keyboardType: TextInputType.emailAddress,
-                                ),
-                                SizedBox(height: compact ? 8 : 10),
-                                _LoginTextField(
-                                  icon: Icons.lock_outline_rounded,
-                                  hintText: 'Рамз',
-                                  obscureText: _obscurePassword,
-                                  trailing: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _obscurePassword = !_obscurePassword;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      _obscurePassword
-                                          ? Icons.visibility_outlined
-                                          : Icons.visibility_off_outlined,
-                                      color: AppColors.gold,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: TextButton(
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: AppColors.goldDark,
-                                      padding: const EdgeInsets.only(
-                                        top: 4,
-                                        bottom: 2,
-                                      ),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Рамзро фаромӯш кардед?',
-                                      style: TextStyle(
-                                        fontSize: 12.5,
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing: 0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          OnboardingPrimaryButton(
-                            label: 'Ворид шудан',
-                            onPressed: () => context.go(RouteNames.home),
-                          ),
-                          SizedBox(height: compact ? 8 : 12),
-                          const _SocialDivider(),
-                          SizedBox(height: compact ? 6 : 8),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        SizedBox(height: compact ? 2 : 6),
+                        _FrostedLoginPanel(
+                          compact: compact,
+                          child: Column(
                             children: [
-                              _SocialButton.google(),
-                              SizedBox(width: 18),
-                              _SocialButton.facebook(),
-                              SizedBox(width: 18),
-                              _SocialButton.apple(),
+                              _WelcomeTitle(
+                                visibleText: titleText,
+                                showCursor:
+                                    !_typingFinished &&
+                                    _subtitleCount == 0 &&
+                                    _showCursor,
+                              ),
+                              _GoldUnderline(width: compact ? 174 : 204),
+                              _TypingSubtitle(
+                                fullText: _welcomeSubtitle,
+                                visibleText: subtitleText,
+                                showCursor:
+                                    titleTypingDone &&
+                                    !_typingFinished &&
+                                    _showCursor,
+                                compact: compact,
+                              ),
+                              SizedBox(height: compact ? 11 : 15),
+                              const _LoginTextField(
+                                icon: Icons.person_outline_rounded,
+                                hintText: 'Рақами телефон ё email',
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              SizedBox(height: compact ? 8 : 10),
+                              _LoginTextField(
+                                icon: Icons.lock_outline_rounded,
+                                hintText: 'Рамз',
+                                obscureText: _obscurePassword,
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                    color: AppColors.gold,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: AppColors.goldDark,
+                                    padding: const EdgeInsets.only(
+                                      top: 4,
+                                      bottom: 2,
+                                    ),
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                  ),
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'Фаромӯш кардед?',
+                                    style: TextStyle(
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                          SizedBox(height: compact ? 6 : 10),
-                          const _RegisterPrompt(),
-                        ],
-                      ),
-                    ],
+                        ),
+                        SizedBox(height: compact ? 20 : 30),
+                        OnboardingPrimaryButton(
+                          label: 'Ворид шудан',
+                          onPressed: () => context.go(RouteNames.home),
+                        ),
+                        SizedBox(height: compact ? 12 : 16),
+                        const _SocialDivider(),
+                        SizedBox(height: compact ? 10 : 14),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _SocialButton.google(),
+                            SizedBox(width: 18),
+                            _SocialButton.facebook(),
+                            SizedBox(width: 18),
+                            _SocialButton.apple(),
+                          ],
+                        ),
+                        SizedBox(height: compact ? 8 : 12),
+                        const _RegisterPrompt(),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -433,37 +400,11 @@ class _FrostedLoginPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadius.lg + 8),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(0, compact ? 11 : 13, 0, 2),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                const Color(0xFFFFF6DE).withValues(alpha: 0.88),
-                Colors.white,
-                Colors.white,
-              ],
-              stops: const [0, 0.34, 1],
-            ),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.9)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withValues(alpha: 0.66),
-                blurRadius: 22,
-                spreadRadius: 6,
-              ),
-            ],
-          ),
-          child: child,
-        ),
-      ),
+    // Дизайни ҳадаф панели мудаввари сафед надорад — матн ва майдонҳо
+    // мустақиман дар заминаи нозуки тиллоӣ-кремӣ ҷойгир мешаванд.
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, compact ? 11 : 13, 0, 2),
+      child: SizedBox(width: double.infinity, child: child),
     );
   }
 }
