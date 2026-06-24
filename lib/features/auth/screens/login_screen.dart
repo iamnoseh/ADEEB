@@ -78,7 +78,18 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           // Тамоми паҳноии таркиби тиллоӣ намоён шавад (мисли дизайн):
           // тарафҳо бурида намешаванд, поён ба сафед мегузарад.
-          const OnboardingAnimatedBackground(fit: BoxFit.fitWidth),
+          const OnboardingAnimatedBackground(
+            fit: BoxFit.fitWidth,
+            // Сафедро баландтар мебарорем, то аз шиками персонаж ба поён
+            // (зери «Хуш омадед!») замина тоза сафед бошад.
+            fadeColors: [
+              Color(0x00FFFFFF),
+              Color(0x00FFFFFF),
+              Color(0xF7FFFFFF),
+              Color(0xFFFFFFFF),
+            ],
+            fadeStops: [0, 0.26, 0.4, 0.5],
+          ),
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
@@ -128,15 +139,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: heroHeight,
                           width: double.infinity,
-                          child: OverflowBox(
-                            maxWidth: width * 1.24,
-                            maxHeight: heroHeight * 1.52,
-                            child: Image.asset(
-                              'images/пр4.png',
-                              height: heroHeight * (compact ? 1.58 : 1.68),
-                              fit: BoxFit.contain,
-                              filterQuality: FilterQuality.high,
-                              semanticLabel: 'ADEEB mascot',
+                          child: Transform.translate(
+                            // Персонажро каме поён мегузорем, то шиками ӯ
+                            // дар заминаи сафед нишинад.
+                            offset: Offset(0, heroHeight * 0.20),
+                            child: OverflowBox(
+                              maxWidth: width * 1.24,
+                              maxHeight: heroHeight * 1.52,
+                              child: Image.asset(
+                                'images/пр4.png',
+                                height: heroHeight * (compact ? 1.58 : 1.68),
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.high,
+                                semanticLabel: 'ADEEB mascot',
+                              ),
                             ),
                           ),
                         ),

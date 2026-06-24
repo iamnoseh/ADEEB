@@ -15,8 +15,19 @@ class OnboardingAnimatedBackground extends StatelessWidget {
   const OnboardingAnimatedBackground({
     this.fit = BoxFit.cover,
     this.imageAlignment = Alignment.topCenter,
+    this.fadeColors = _defaultFadeColors,
+    this.fadeStops = _defaultFadeStops,
     super.key,
   });
+
+  /// Гузариши пешфарзи замина ба сафед (барои экранҳои онбординг).
+  static const List<Color> _defaultFadeColors = <Color>[
+    Color(0x00FFFFFF),
+    Color(0x00FFFFFF),
+    Color(0xEFFFFFFF),
+    Color(0xFFFFFFFF),
+  ];
+  static const List<double> _defaultFadeStops = <double>[0, 0.44, 0.74, 1];
 
   /// Тарзи ҷойгиршавии тасвири замина. Барои дидани тамоми паҳноии таркиб
   /// (мисли дизайн) `BoxFit.fitWidth`-ро истифода кунед.
@@ -24,6 +35,12 @@ class OnboardingAnimatedBackground extends StatelessWidget {
 
   /// Кадом қисми тасвири замина намоён бошад.
   final AlignmentGeometry imageAlignment;
+
+  /// Рангҳои гузариши амудӣ ба сафед (поёни замина).
+  final List<Color> fadeColors;
+
+  /// Нуқтаҳои таваққуфи гузариш (ба `fadeColors` мувофиқ).
+  final List<double> fadeStops;
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +56,13 @@ class OnboardingAnimatedBackground extends StatelessWidget {
             filterQuality: FilterQuality.high,
           ),
         ),
-        const DecoratedBox(
+        DecoratedBox(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0x00FFFFFF),
-                Color(0x00FFFFFF),
-                Color(0xEFFFFFFF),
-                Color(0xFFFFFFFF),
-              ],
-              stops: [0, 0.44, 0.74, 1],
+              colors: fadeColors,
+              stops: fadeStops,
             ),
           ),
         ),
