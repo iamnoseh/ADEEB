@@ -1,5 +1,6 @@
-﻿import 'package:adeeb/app/router/route_names.dart';
+import 'package:adeeb/app/router/route_names.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
+import 'package:adeeb/features/onboarding/widgets/onboarding_floating_icon.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_logo.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_pagination.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_primary_button.dart';
@@ -15,12 +16,14 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _entranceController;
+  late final AnimationController _floatController;
 
   late final Animation<double> _backgroundFade;
   late final Animation<double> _logoFade;
   late final Animation<Offset> _logoSlide;
+  late final Animation<double> _iconsFade;
   late final Animation<double> _titleFade;
   late final Animation<Offset> _titleSlide;
   late final Animation<double> _subtitleFade;
@@ -36,6 +39,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1150),
     )..forward();
+    _floatController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3100),
+    )..repeat();
 
     _backgroundFade = _curved(0.00, 0.28, Curves.easeOut);
     _logoFade = _curved(0.08, 0.34, Curves.easeOut);
@@ -43,6 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       begin: const Offset(0, -0.16),
       end: Offset.zero,
     ).animate(_curved(0.08, 0.40, Curves.easeOutCubic));
+    _iconsFade = _curved(0.26, 0.62, Curves.easeOutCubic);
     _titleFade = _curved(0.56, 0.76, Curves.easeOut);
     _titleSlide = _upSlide(0.56, 0.78);
     _subtitleFade = _curved(0.64, 0.84, Curves.easeOut);
@@ -68,24 +76,28 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   void dispose() {
+    _floatController.dispose();
     _entranceController.dispose();
     super.dispose();
   }
 
-  Widget _buildStaticIcon({
+  Widget _buildFloatingIcon({
     required String imagePath,
     required Alignment alignment,
     required double size,
+    required double phase,
+    required double amplitude,
+    required double rotationTurns,
   }) {
-    return Align(
+    return OnboardingFloatingIcon(
+      imagePath: imagePath,
+      entrance: _iconsFade,
+      floatController: _floatController,
       alignment: alignment,
-      child: Image.asset(
-        imagePath,
-        width: size,
-        height: size,
-        fit: BoxFit.contain,
-        filterQuality: FilterQuality.high,
-      ),
+      amplitude: amplitude,
+      rotationTurns: rotationTurns,
+      size: size,
+      phase: phase,
     );
   }
 
@@ -110,7 +122,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   210.0,
                   compact ? 300.0 : 410.0,
                 );
-                final iconSize = compact ? 86.0 : 106.0;
+                final iconSize = compact ? 96.0 : 120.0;
                 final mascotHeight = heroHeight * (compact ? 0.92 : 0.96);
 
                 return Padding(
@@ -141,37 +153,46 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               filterQuality: FilterQuality.high,
                               semanticLabel: 'ADEEB mascot',
                             ),
-                            _buildStaticIcon(
+                            _buildFloatingIcon(
                               imagePath: 'images/icon_cap.png',
                               alignment: Alignment(
-                                -0.98,
-                                compact ? -0.54 : -0.48,
+                                -1.04,
+                                compact ? -0.56 : -0.50,
                               ),
                               size: iconSize,
+                              phase: 0.02,
+                              amplitude: compact ? 4.5 : 6,
+                              rotationTurns: 0.006,
                             ),
-                            _buildStaticIcon(
+                            _buildFloatingIcon(
                               imagePath: 'images/icon_target.png',
                               alignment: Alignment(
-                                0.98,
-                                compact ? -0.42 : -0.36,
+                                1.04,
+                                compact ? -0.44 : -0.38,
                               ),
                               size: iconSize,
+                              phase: 0.34,
+                              amplitude: compact ? 5.5 : 7,
+                              rotationTurns: -0.005,
                             ),
-                            _buildStaticIcon(
+                            _buildFloatingIcon(
                               imagePath: 'images/icon_language.png',
                               alignment: Alignment(
-                                -0.92,
-                                compact ? 0.54 : 0.58,
+                                -0.98,
+                                compact ? 0.58 : 0.62,
                               ),
                               size: iconSize,
+                              phase: 0.60,
+                              amplitude: compact ? 5 : 6.5,
+                              rotationTurns: -0.006,
                             ),
-                            _buildStaticIcon(
+                            _buildFloatingIcon(
                               imagePath: 'images/icon_trophy.png',
-                              alignment: Alignment(
-                                0.92,
-                                compact ? 0.46 : 0.52,
-                              ),
+                              alignment: Alignment(0.98, compact ? 0.50 : 0.56),
                               size: iconSize,
+                              phase: 0.82,
+                              amplitude: compact ? 4.5 : 6,
+                              rotationTurns: 0.005,
                             ),
                           ],
                         ),
@@ -195,7 +216,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         child: SlideTransition(
                           position: _buttonSlide,
                           child: OnboardingPrimaryButton(
-                            onPressed: () => context.go(RouteNames.onboardingTwo),
+                            onPressed: () =>
+                                context.go(RouteNames.onboardingTwo),
                           ),
                         ),
                       ),
@@ -210,4 +232,3 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 }
-

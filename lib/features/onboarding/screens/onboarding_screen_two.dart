@@ -1,9 +1,12 @@
-﻿import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
+import 'package:adeeb/app/router/route_names.dart';
+import 'package:adeeb/features/onboarding/widgets/onboarding_animated_background.dart';
+import 'package:adeeb/features/onboarding/widgets/onboarding_floating_icon.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_logo.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_pagination.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_primary_button.dart';
 import 'package:adeeb/features/onboarding/widgets/onboarding_title_section.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingScreenTwo extends StatefulWidget {
   const OnboardingScreenTwo({super.key});
@@ -13,12 +16,14 @@ class OnboardingScreenTwo extends StatefulWidget {
 }
 
 class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _entranceController;
+  late final AnimationController _floatController;
 
   late final Animation<double> _backgroundFade;
   late final Animation<double> _logoFade;
   late final Animation<Offset> _logoSlide;
+  late final Animation<double> _cardsFade;
   late final Animation<double> _titleFade;
   late final Animation<Offset> _titleSlide;
   late final Animation<double> _subtitleFade;
@@ -34,6 +39,10 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
       vsync: this,
       duration: const Duration(milliseconds: 1180),
     )..forward();
+    _floatController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3300),
+    )..repeat();
 
     _backgroundFade = _curved(0.00, 0.28, Curves.easeOut);
     _logoFade = _curved(0.06, 0.30, Curves.easeOut);
@@ -41,6 +50,7 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
       begin: const Offset(0, -0.14),
       end: Offset.zero,
     ).animate(_curved(0.06, 0.34, Curves.easeOutCubic));
+    _cardsFade = _curved(0.24, 0.62, Curves.easeOutCubic);
     _titleFade = _curved(0.54, 0.76, Curves.easeOut);
     _titleSlide = _upSlide(0.54, 0.78);
     _subtitleFade = _curved(0.62, 0.84, Curves.easeOut);
@@ -64,12 +74,13 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
     ).animate(_curved(begin, end, Curves.easeOutCubic));
   }
 
-  void _handleContinue() {
-    // TODO: Navigate to onboarding screen 3 when implemented.
+  void _handleContinue(BuildContext context) {
+    context.go(RouteNames.onboardingThree);
   }
 
   @override
   void dispose() {
+    _floatController.dispose();
     _entranceController.dispose();
     super.dispose();
   }
@@ -90,16 +101,19 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
     required String imagePath,
     required Alignment alignment,
     required double size,
+    required double phase,
+    required double amplitude,
+    required double rotationTurns,
   }) {
-    return Align(
+    return OnboardingFloatingIcon(
+      imagePath: imagePath,
+      entrance: _cardsFade,
+      floatController: _floatController,
       alignment: alignment,
-      child: Image.asset(
-        imagePath,
-        width: size,
-        height: size,
-        fit: BoxFit.contain,
-        filterQuality: FilterQuality.high,
-      ),
+      amplitude: amplitude,
+      rotationTurns: rotationTurns,
+      size: size,
+      phase: phase,
     );
   }
 
@@ -124,7 +138,7 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
                   280.0,
                   compact ? 390.0 : 460.0,
                 );
-                final cardSize = compact ? 96.0 : 116.0;
+                final cardSize = compact ? 112.0 : 134.0;
 
                 return Padding(
                   padding: EdgeInsets.fromLTRB(
@@ -153,34 +167,43 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
                             _buildRewardCard(
                               imagePath: 'images/xp_transparent.png',
                               alignment: Alignment(
-                                -0.98,
-                                compact ? -0.34 : -0.30,
+                                -1.06,
+                                compact ? -0.38 : -0.34,
                               ),
                               size: cardSize,
+                              phase: 0.04,
+                              amplitude: compact ? 4.5 : 6,
+                              rotationTurns: 0.004,
                             ),
                             _buildRewardCard(
                               imagePath: 'images/coin_transparent.png',
                               alignment: Alignment(
-                                0.98,
-                                compact ? -0.22 : -0.18,
+                                1.06,
+                                compact ? -0.26 : -0.22,
                               ),
                               size: cardSize,
+                              phase: 0.32,
+                              amplitude: compact ? 5.5 : 7,
+                              rotationTurns: -0.004,
                             ),
                             _buildRewardCard(
                               imagePath: 'images/streak_card_transparent.png',
                               alignment: Alignment(
-                                -0.94,
-                                compact ? 0.34 : 0.38,
+                                -1.00,
+                                compact ? 0.40 : 0.44,
                               ),
                               size: cardSize,
+                              phase: 0.58,
+                              amplitude: compact ? 5 : 6.5,
+                              rotationTurns: -0.0045,
                             ),
                             _buildRewardCard(
                               imagePath: 'images/league_transparent.png',
-                              alignment: Alignment(
-                                0.94,
-                                compact ? 0.28 : 0.34,
-                              ),
+                              alignment: Alignment(1.00, compact ? 0.34 : 0.40),
                               size: cardSize,
+                              phase: 0.80,
+                              amplitude: compact ? 4.5 : 6,
+                              rotationTurns: 0.0045,
                             ),
                           ],
                         ),
@@ -216,7 +239,9 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
                         opacity: _buttonFade,
                         child: SlideTransition(
                           position: _buttonSlide,
-                          child: OnboardingPrimaryButton(onPressed: _handleContinue),
+                          child: OnboardingPrimaryButton(
+                            onPressed: () => _handleContinue(context),
+                          ),
                         ),
                       ),
                     ],
@@ -230,4 +255,3 @@ class _OnboardingScreenTwoState extends State<OnboardingScreenTwo>
     );
   }
 }
-
